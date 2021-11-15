@@ -19,9 +19,10 @@ $ 'ALEx/' join file.path put
   
   Uncomment any extensions you want to use in your program. )
 
-' [ $ 'bigrat.qky'
-    $ 'lookup-table.qky'
-    $ 'merge-sort.qky' ]
+' [ ( $ 'bigrat.qky' )
+    ( $ 'lookup-table.qky' )
+    ( $ 'merge-sort.qky' )
+    ( $ 'literal.qky' ) ]
     
 witheach [ do loadfile ]
 

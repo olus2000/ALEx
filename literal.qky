@@ -1,0 +1,23 @@
+( [ this ] is literal.qky )
+
+( ------ Literal ------
+  Copyright (C) 2021 Aleksander "olus2000" Sabak
+  https://github.com/olus2000                                              )
+
+( This module adds a builder that serves a similar purpose as `constant`
+  but instead of resulting in an object that will put the calculated value
+  on the stack it just results in the object, no matter if it's a stack,
+  an operator or a number, without any additions.
+
+  # Glossary:
+
+  literal ( a b --> c d ):
+    A builder that will take the element last added to `a`, `do` it and
+    put the resulting object back to `a`. The object done should have
+    a stack effect of ( --> x ).
+                                                                           )
+
+[ swap dup dup
+  share do
+  swap put
+  swap ]                             builds literal  (     a b --> c d     )

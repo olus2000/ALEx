@@ -1,0 +1,41 @@
+[ this ] is lookup-table.qky
+
+( ------ Lookup Table ------
+  Copyright (C) 2021 Aleksander "olus2000" Sabak
+  https://github.com/olus2000                                         )
+
+( This extension implements a simple lookup table word similar to the
+  base `table` word. It allows for creating static association tables
+  by providing two nests of equal lengths: one for keys and one for
+  values. Keys are assosciated with values on the same positions in
+  the nests.
+
+  Structure of a lookup table:
+  [ lut [ keys ] [ values ] ]                                         
+
+  # Glossary:
+
+  lut ( key --> value true | key false ):
+    Takes a Quackery object 'key' from the stack. If a value was
+    associated with this key `lut` will leave it on the stack along
+    with a `true` value. Otherwise it will leave the key and a `false`
+    value.
+
+    To find the associated value `lut` looks for the key. If the key
+    is found then the value associated with it is at the same index in
+    the second item following the `lut`. For example if the lookup
+    table is defined as such:
+    `[ lut [ 1 3 5 ] [ 6 4 2 ] ]`
+    Then key 1 is associated with value 6, key 3 is associated with
+    value 4 and key 5 is associated with value 2.
+
+    Used with conjunction with `do`, lookup tables provides multiway
+    branching behavior similar to `case` in other languages.          )
+
+[ dup ]'[ ]'[ unrot
+  dup size dip find
+  over = iff
+  [ 2drop false ] else
+  [ dip [ 2 peek ]
+    peek nip true ]
+  ]done[ ]                    is lut ( key --> value true | key false )

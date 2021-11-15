@@ -1,0 +1,59 @@
+
+  [ this ] is merge-sort.qky
+
+  ( ------ Merge Sort ------
+    Copyright (C) Gordon Charlton
+    https://github.com/GordonCharlton                                )
+  
+  ( This extensions is part of the `extensionsX.qky` file included
+    in the Quackery repository. It's purpose is to replace the base
+    sorting words that use insertion sort with a more efficient
+    algorithm.
+    
+    # Glossary:
+    
+    merge.test ( --> s ):
+      An ancillary stack used by the merging words.
+    
+    mergewith ( [ [ --> [ ):
+      takes two sorted nests and merges them using the item following
+      `mergewith`, which should take two items for comparison and
+      return a boolean.
+    
+    sort.test, sortwith, sort, sort$:
+      Changed to use merge sort for nests bigger than 16 items.      )
+
+  [ stack ]                     is merge.test  (         --> s       )
+
+  [ ]'[ merge.test put
+    [] temp put
+    [ dup  [] != while
+      over [] != while
+      over 0 peek
+      over 0 peek
+      merge.test share do
+      not if dip
+        [ 1 split
+          temp take
+          rot join
+          temp put ]
+        again ]
+      join
+      temp take swap join
+      merge.test release  ]     is mergewith   (     [ [ --> [       )
+
+  [ stack ]                     is sort.test   (         --> s       )
+
+  [ ]'[ sort.test put
+    [ dup size 16 < iff
+        [ sortwith [ sort.test share do ] ]
+        done
+      dup size 2 / split
+      swap recurse
+      swap recurse
+      mergewith [ sort.test share do ] ]
+    sort.test release ]         is sortwith    (       [ --> [       )
+
+  [ sortwith > ]                is sort        (       [ --> [       )
+
+  [ sortwith $> ]               is sort$       (       [ --> [       )

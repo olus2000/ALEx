@@ -1,0 +1,28 @@
+[ this ] is ALEx-loader.qky
+  
+( `file.path` support is required for the ALEx loader.
+  This section is dedicated to loading a filepath extension
+  if `file.path` is not already present.                    )
+
+[ $ 'file.path' name? not if
+  [ $ 'ALEx/filepath.qky' sharefile nip iff
+    [ $ 'ALEx/filepath.qky' loadfile ]
+    else
+    [ $ "ALEx problem: Couldn't access 'ALEx/filepath.qky'"
+      message put bail ] ] ] now!
+
+file.path share
+$ 'ALEx/' join file.path put
+
+( Put any extensions you need in the 'extensions/' folder
+  and add their file names to the loadfile nest.
+  
+  Uncomment any extensions you want to use in your program. )
+
+' [ $ 'bigrat.qky'
+    $ 'lookup-table.qky'
+    $ 'merge-sort.qky' ]
+    
+witheach [ do loadfile ]
+
+file.path release

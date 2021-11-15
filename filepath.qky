@@ -1,0 +1,52 @@
+[ this ] is filepath.qky
+
+( ------ File Path ------ 
+  Copyright (C) 2021 Aleksander "olus2000" Sabak
+  https://github.com/olus2000                        )
+
+( This extension allows for better handling of files
+  and directories. Adding the `file.path` ancillary
+  stack allows words to set a relative path for other
+  words to work from.
+
+  # Glossary:
+
+  file.path ( --> s ):
+    An ancillary stack holding the relative path to
+    be used by file handling words.
+    
+    This stack is protected.
+
+  with-path ( $ --> $ ):
+    Prepends the top value from the `file.path` stack
+    to the string on top of the Quackery stack.
+
+  sharefile, takefile, releasefile, replacefile,
+  putfile:
+    Changed the default behavior to prepend the given
+    file name with the top value from the `file.path`
+    stack.
+  
+  loadfile:
+    Changed the default behavior to prepend the given
+    file name with the top value from the `file.path`
+    stack. This word now only checks for duplicate
+    loads using the given file name. If you wish to
+    load a file from another directory then put this
+    directory on `file.path` first and only pass the
+    file name to `loadfile`.                         )
+
+[ stack [ ] ]           is file.path ( --> s )
+                   protect file.path
+
+[ file.path share swap join ] is with-path ( $ --> $ )
+
+[ with-path sharefile ]       is sharefile
+[ with-path putfile ]         is putfile
+[ with-path takefile ]        is takefile
+[ with-path releasefile ]     is releasefile
+[ dip with-path replacefile ] is replacefile
+
+[ dup name?
+  iff drop done
+  with-path loadfile ]        is loadfile

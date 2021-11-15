@@ -1,0 +1,19 @@
+[ this ] is template.qky
+
+( ------ Template Extension ------
+  Copyright (C) 20XX Your "Nickname" Name
+  https://some.reference.url                                               )
+
+( Extension overview                                        
+
+  # Glossary:
+
+  word ( stack --> effect ):
+    Description of what the word does. The colon after the stack effect is
+    very important to prevent the parenthesis from closing the comment.    )
+
+(
+
+[ word definition ]                      is word    (   stack --> effect   )
+
+)

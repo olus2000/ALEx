@@ -1,0 +1,248 @@
+[ this ] is sundry.qky
+
+( ------ various useful words ------
+  Copyright (C) 2022 Gordon Charlton 
+   https://github.com/GordonCharlton )
+
+( Glossary:
+
+  # ( [ $ --> [ $ ):
+
+  Builder.  "#" means "comment to end of line"
+
+  footnotes ( [ $ --> [ $ ):
+
+  Causes the compiler to disregard everything that comes after
+  it to the end of the string or file.
+
+
+  [peek] ( [ p --> x ):
+
+  Returns the item at the specified place p in a nest.
+
+  "p" is a "path", a nest of item numbers leading to a specific
+  item in an (optionally multiply nested) nest.
+
+  Given the nest [ 0 1 [ 20 21 22 ] 3 ]
+
+  the path [ 1 ] leads to the number 1
+  the path [ 2 ] leads to the nest [ 20 21 22 ] and
+  the path [ 2 1 ] leads to the number 21
+
+  [poke] ( x [ p --> [ ):
+
+  Replaces the item at the specified place p in a nest with x.
+
+  999 ' [ 0 1 [ 20 21 22 ] 3 ] ' [ 2 1 ] [poke]
+
+  will return [ 0 1 [ 20 999 22 ] 3 ]
+
+
+  switch ( x --> ):
+
+  x will be compared to various cases within a switch statement.
+
+  case ( x --> ):
+
+  x is compared to the item consumed by switch. If they are equal
+  the item following case is done and the case statement exited.
+
+  otherwise ( --> ):
+
+  otherwise must occur within a switch statement after the cases.
+  Words following otherwise are the "default" action i.e. will be
+  executed if none of the cases are satisfied.
+
+  "otherwise ( do nothing )" is the suggested way of indicating
+  there is no default action.
+
+  switch.arg ( --> s ):
+
+  Ancillary stack used within a switch statement. It is protected
+  so that switch statements can be used by builders.
+
+  See the demo code in the footnotes for the structure of a
+  switch statement.
+
+
+  map ( [ x --> [ ):
+
+  map applies the word or nest x to each item in a nest. So
+
+  ' [ [ 1 2 ] [ 3 4 ] [ 5 6 ] ] ' reverse map
+
+  would return [ [ 2 1 ] [ 4 3 ] [ 6 5 ] ]
+
+  x must take one argument and return one item.
+
+  map.arg ( --> s ):
+
+  Ancillary stack used by map. It is protected so that map
+  can be used by builders.
+
+
+  filter ( [ x --> [ [ ):
+
+  Filter applies the test x to each item in a nest. It returns
+  two nests, the items for which the test returned false, and the
+  items for which the test returned true.
+
+  x must consume one item and return a Boolean.
+
+  filter.arg ( --> s ):
+
+  Ancillary stack used by filter. It is protected so that filter
+  can be used by builders.
+
+
+  reduce ( [ x --> x ):
+
+  reduce cumulatively applies the word or nest x to the items in
+  a nest. So
+
+  ' [ [ 1 ] [ 2 ] [ 3 ] [ 4 ] ] ' join reduce
+
+  is equivalent to
+
+    ' [ 1 ] ' [ 2 ] join ' [ 3 ] join ' [ 4 ] join
+
+  and returns [ 1 2 3 4 ]
+
+  If the nest is empty reduce returns an empty nest.
+
+  If the nest has one item, reduce returns that item.
+
+  x must consume two items and return one item.
+
+  reduce.arg ( --> s ):
+
+  Ancillary stack used by reduce. It is protected so that reduce
+  can be used by builders.
+
+
+  range ( m n --> [ ):
+
+  range returns a nest of numbers from m to n-1.
+
+  If m is not less than n it returns an empty nest.
+
+)
+
+
+  [ dup $ "" = not while
+    behead carriage = until ] builds #          (   [ $ --> [ $ )
+
+  [ drop $ "" ]               builds footnotes  (   [ $ --> [ $ )
+
+
+# ----- deep peek and poke -----
+
+  [ witheach peek ]               is [peek]     (   [ p --> x   )
+
+  [ dup dip
+      [ rot dip
+        [ dip dup
+          witheach
+            [ peek dup ]
+    2drop ] ]
+    reverse
+    witheach
+      [ dip swap poke ] ]         is [poke]     ( x [ p --> [   )
+
+
+# ----- switch statement -----
+
+  [ stack ]                       is switch.arg (       --> s   )
+  protect switch.arg
+
+  [ switch.arg put ]              is switch     (     x -->     )
+
+  [ switch.arg release ]          is otherwise  (       -->     )
+
+  [ switch.arg share
+    != iff ]else[ done
+    otherwise
+    ]'[ do ]done[ ]               is case       (     x -->     )
+
+
+# ----- combinators -----
+
+  [ stack ]                       is map.act    (       --> s   )
+  protect map.act
+
+  [ map.act put
+    [] swap witheach
+      [ map.act share do
+        nested join ]
+     map.act release ]            is map        (   [ x --> [   )
+
+  [ stack ]                       is filter.act (       --> s   )
+  protect filter.act
+
+  [ filter.act put
+    [] [] rot witheach
+      [ dup
+        filter.act share do
+        iff [ nested join ]
+        else
+           [ rot swap
+             nested join swap ] ]
+    filter.act release ]          is filter     (   [ x --> [ [ )
+
+  [ stack ]                       is reduce.act (       --> s   )
+  protect reduce.act
+
+  [ reduce.act put
+    [ dup [] = if done
+      behead swap
+      witheach
+        [ reduce.act share do ] ]
+    reduce.act release ]          is reduce     (   [ x --> x   )
+
+
+# ----- range -----
+
+  [ over - swap temp put
+    [] swap times
+      [ i^ temp share + join ]
+    temp release ]                is range      (   n n --> [   )
+
+
+footnotes  ( ** make this line a comment to run demo code ** )
+
+
+#  demo code for deep peek and poke...
+
+     ' [ 10 [ 20 30 40 ] 50 ]
+    dup     ' [ 1 2 ] [peek] echo cr     # prints 40
+    99 swap ' [ 1 2 ] [poke]
+            ' [ 1 2 ] [peek] echo cr     # prints 99
+  cr
+
+
+#  demo code for switch statement...
+
+  [ switch
+    1       case [ say "The number 1."     cr ]
+    $ "two" case [ say 'The string "two".' cr ]
+       otherwise [ say "Something else."   cr ] ] is demo
+                                               (    x -->       )
+  ' tally demo     # prints: Something else.
+  $ "two" demo     # prints: The string "two".
+        1 demo     # prints: The number 1.
+  cr
+
+
+# demo code for combinators...
+
+  $ "pandemoniums" ' [ char n < ] filter
+  echo$ sp echo$ cr                      # prints: ademim pnonus
+
+  ' [ 1 2 3 4 5 ] ' [ 3 + ] map echo cr  # prints: [ 4 5 6 7 8 ]
+
+  ' [ 1 2 3 4 5 ] ' * reduce echo cr     # prints: 120
+  cr
+
+# demo code for range...
+
+  3 8 range echo cr                      # prints: [ 3 4 5 6 7 ]

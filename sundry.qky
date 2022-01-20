@@ -49,12 +49,15 @@
 
   otherwise ( --> ):
 
-  otherwise must occur within a switch statement after the cases.
   Words following otherwise are the "default" action i.e. will be
   executed if none of the cases are satisfied.
 
   "otherwise ( do nothing )" is the suggested way of indicating
   there is no default action.
+
+  "otherwise $ 'Unexpected otherwise.' fail" is the suggested way
+  of indicating that none of the cases were satisfied when one of
+  them should have been.
 
   switch.arg ( --> s ):
 
@@ -225,7 +228,7 @@ footnotes  ( ** make this line a comment to run demo code ** )
   [ switch
     1       case [ say "The number 1."     cr ]
     $ "two" case [ say 'The string "two".' cr ]
-       otherwise [ say "Something else."   cr ] ] is demo
+       otherwise say "Something else." cr ]     is demo
                                                (    x -->       )
   ' tally demo     # prints: Something else.
   $ "two" demo     # prints: The string "two".

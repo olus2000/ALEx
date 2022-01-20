@@ -20,7 +20,7 @@
   as a nest of numbers (the memory) and a number (a pointer to
   the current memory cell). Initially the nest is one cell long
   (initialised to 0) but can grow at either end as required.
-  The cell at the leftmost end is always cell number 0.)
+  The cell at the leftmost end is always cell number 0.
 
   The data string is stored on the ancillary stack "temp".
 

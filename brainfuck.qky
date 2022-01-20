@@ -1,6 +1,6 @@
 [ this ] is brainfuck.qky
 
-( ------ various useful words ------
+( ------ brainfuck interpreter ------
   Copyright (C) 2022 Gordon Charlton
   https://github.com/GordonCharlton )
 

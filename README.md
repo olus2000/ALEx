@@ -37,7 +37,7 @@ Some extensions may require `file.path` support which, if not provided by the sy
 
 * `brainfuck.qky`
 
- brainfuck interpreter.
+  brainfuck interpreter.
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
 

@@ -58,6 +58,18 @@ Some extensions may require `file.path` support which, if not provided by the sy
   Replaces the default sorting words with a more efficient algorithm.
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
+  
+* `sundry.qky`
+
+ Some words that were considered for Quackery but omitted for the sake of brevity.
+
+ * `#` `footnotes` – more ways of making comments.
+ * `[peek]` `[poke]` – like peek and poke but can dive into nested nests.
+ * `switch` `case` `otherwise` – a switch statement.
+ * `map` `filter` `reduce` – combinators.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
 
 * `template.qky`
 

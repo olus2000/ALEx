@@ -66,7 +66,7 @@ Some extensions may require `file.path` support which, if not provided by the sy
    * `#` `footnotes` – more ways of making comments.
    * `[peek]` `[poke]` – like `peek` and `poke` but can dive into nested nests.
    * `switch` `case` `otherwise` – a switch statement.
-   * `map` `filter` `reduce` – combinators.
+   * `map` `filter` `fold` – combinators.
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
 

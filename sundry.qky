@@ -1,7 +1,7 @@
 [ this ] is sundry.qky
 
 ( ------ various useful words ------
-  Copyright (C) 2022 Gordon Charlton 
+  Copyright (C) 2022 Gordon Charlton
    https://github.com/GordonCharlton )
 
 ( Glossary:
@@ -84,11 +84,10 @@
   can be used by builders.
 
 
-  filter ( [ x --> [ [ ):
+  filter ( [ x --> [ ):
 
-  Filter applies the test x to each item in a nest. It returns
-  two nests, the items for which the test returned false, and the
-  items for which the test returned true.
+  filter applies the test x to each item in a nest. It returns a
+  nest of the items for which the test returned true.
 
   x must consume one item and return a Boolean.
 
@@ -98,12 +97,12 @@
   can be used by builders.
 
 
-  reduce ( [ x --> x ):
+fold ( [ x --> x ):
 
-  reduce cumulatively applies the word or nest x to the items in
-  a nest. So
+  fold cumulatively applies the word or nest x to the items in a
+  nest. So
 
-  ' [ [ 1 ] [ 2 ] [ 3 ] [ 4 ] ] ' join reduce
+  ' [ [ 1 ] [ 2 ] [ 3 ] [ 4 ] ] ' join fold
 
   is equivalent to
 
@@ -111,16 +110,16 @@
 
   and returns [ 1 2 3 4 ]
 
-  If the nest is empty reduce returns an empty nest.
+  If the nest is empty fold returns an empty nest.
 
-  If the nest has one item, reduce returns that item.
+  If the nest has one item, fold returns that item.
 
   x must consume two items and return one item.
 
-  reduce.arg ( --> s ):
+  fold.arg ( --> s ):
 
-  Ancillary stack used by reduce. It is protected so that reduce
-  can be used by builders.
+  Ancillary stack used by fold. It is protected so that fold can
+  be used by builders.
 
 
   range ( m n --> [ ):
@@ -183,24 +182,22 @@
   protect filter.act
 
   [ filter.act put
-    [] [] rot witheach
+    [] swap witheach
       [ dup
         filter.act share do
         iff [ nested join ]
-        else
-           [ rot swap
-             nested join swap ] ]
-    filter.act release ]          is filter     (   [ x --> [ [ )
+        else drop ]
+    filter.act release ]          is filter     (   [ x --> [   )
 
-  [ stack ]                       is reduce.act (       --> s   )
-  protect reduce.act
+  [ stack ]                       is fold.act   (       --> s   )
+  protect fold.act
 
-  [ reduce.act put
+  [ fold.act put
     [ dup [] = if done
       behead swap
       witheach
-        [ reduce.act share do ] ]
-    reduce.act release ]          is reduce     (   [ x --> x   )
+        [ fold.act share do ] ]
+    fold.act release ]            is fold       (   [ x --> x   )
 
 
 # ----- range -----
@@ -229,7 +226,7 @@ footnotes  ( ** make this line a comment to run demo code ** )
     1       case [ say "The number 1."     cr ]
     $ "two" case [ say 'The string "two".' cr ]
        otherwise say "Something else." cr ]     is demo
-                                               (    x -->       )
+                                                (     x -->      )
   ' tally demo     # prints: Something else.
   $ "two" demo     # prints: The string "two".
         1 demo     # prints: The number 1.
@@ -238,12 +235,12 @@ footnotes  ( ** make this line a comment to run demo code ** )
 
 # demo code for combinators...
 
-  $ "pandemoniums" ' [ char n < ] filter
-  echo$ sp echo$ cr                      # prints: ademim pnonus
+  $ "pandemonium" ' [ char n < ] filter
+  echo$ cr                               # prints: ademim
 
   ' [ 1 2 3 4 5 ] ' [ 3 + ] map echo cr  # prints: [ 4 5 6 7 8 ]
 
-  ' [ 1 2 3 4 5 ] ' * reduce echo cr     # prints: 120
+  ' [ 1 2 3 4 5 ] ' * fold echo cr       # prints: 120
   cr
 
 # demo code for range...

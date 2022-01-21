@@ -76,7 +76,7 @@
   The Quackery script below, from the definition of totape and
   including the demonstration code (which prints "It works!")
   is exactly 1024 characters long, i.e. the same size as the
-  executable code compiler for the FALSE programming language
+  executable code for the FALSE programming language compiler
   which inspired brainfuck.
 
   Source: https://en.wikipedia.org/wiki/Brainfuck#History

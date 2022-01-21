@@ -63,7 +63,7 @@
   the current memory cell. If the data string is empty,
   stores the number 0.
 
-  zero ( [ n --> [ n ):
+  zero ( [ n --> [ n  b ):
 
   Returns true if the current memory cell contains the number 0
   and false otherwise.

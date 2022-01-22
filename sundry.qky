@@ -110,6 +110,33 @@ fold ( [ x --> x ):
 
   and returns [ 1 2 3 4 ]
 
+  IMPORTANT: Note that in the example above does
+             NOT state that it is equivalent to:
+
+    ' [ ] ' [ 1 ] ' join [ 2 ] join ' [ 3 ] join ' [ 4 ] join
+
+  where the initial ' [ ] is the Identity Element for the binary
+  operator "join". This means that fold has a potential trip 
+  hazard. For example,
+
+    ' [ [ 1 2 ] [ 3  4 ] ]
+    ' [ reverse join ] fold
+
+  will return "[ 1 2 4 3 ]" and not "[ 2 1 4 3 ]" as you might
+  anticipate. This can be fixed by either prepending an
+  appropriate Identity Element, or by refactoring to avoid the
+  problem. So instead of
+
+    ' [ reverse join ] fold
+
+    use either
+
+    [] nested swap join ' [ reverse join ] fold
+
+  or
+
+    ' reverse map ' join fold
+
   If the nest is empty fold returns an empty nest.
 
   If the nest has one item, fold returns that item.
@@ -121,7 +148,7 @@ fold ( [ x --> x ):
   Ancillary stack used by fold. It is protected so that fold can
   be used by builders.
 
-  NOTE: with map, filter, and fold, when x is performed the stack
+  TIP: with map, filter, and fold, when x is performed the stack
   has the partial result and the next item in the nest on it.
   Also, i^ will return the iteration count. Try the following...
 

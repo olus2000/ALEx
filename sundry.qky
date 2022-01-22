@@ -121,6 +121,14 @@ fold ( [ x --> x ):
   Ancillary stack used by fold. It is protected so that fold can
   be used by builders.
 
+  NOTE: with filter, fold, and nest, when x is performed the
+  stack has the partial result and the next item in the nest on 
+  it, and that i^ will return the iteration count. Try the
+  following...
+
+    ' [ 111 222 333 ] ' [ join i^ ] map echo cr
+    ' [ 111 222 333 ] ' [ i^ join ] map echo cr
+
 
   range ( m n --> [ ):
 

@@ -43,7 +43,7 @@
 
    [ ' [ [ ] ] swap join
      ' [ nested swap join ]
-     fold ]                 is reverse ( [ --> [ )
+     fold ]                 is reverse ( [ --> [ ):
 
 
   map ( [ x --> [ ):

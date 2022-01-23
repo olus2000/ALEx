@@ -177,13 +177,13 @@
   [ ' [ [ ] ] rot join swap
     nested
     ' [ nested join ] join
-    fold ]                        is map        (   [ x --> x   )
+    fold ]                        is map        (   [ x --> [   )
 
   [ ' [ [ ] ] rot join swap
     nested ' dup swap join
     ' [ iff [ nested join ]
         else drop ] join
-    fold ]                        is filter     (   [ x --> x   )
+    fold ]                        is filter     (   [ x --> [   )
 
 
 # ----- range -----

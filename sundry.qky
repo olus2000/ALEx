@@ -76,12 +76,9 @@
 
   would return [ [ 2 1 ] [ 4 3 ] [ 6 5 ] ]
 
+  If the nest is empty map returns an empty nest.
+
   x must take one argument and return one item.
-
-  map.arg ( --> s ):
-
-  Ancillary stack used by map. It is protected so that map
-  can be used by builders.
 
 
   filter ( [ x --> [ ):
@@ -89,53 +86,24 @@
   filter applies the test x to each item in a nest. It returns a
   nest of the items for which the test returned true.
 
+  If the nest is empty filter returns an empty nest.
+
   x must consume one item and return a Boolean.
 
-  filter.arg ( --> s ):
 
-  Ancillary stack used by filter. It is protected so that filter
-  can be used by builders.
-
-
-fold ( [ x --> x ):
+  fold ( [ x --> x ):
 
   fold cumulatively applies the word or nest x to the items in a
-  nest. So
+  nest, taking the first item as the first partial result without 
+  applying x to it. So
 
-  ' [ [ 1 ] [ 2 ] [ 3 ] [ 4 ] ] ' join fold
+  ' [ 1 2 3 4 5 ] ' + fold
 
   is equivalent to
 
-    ' [ 1 ] ' [ 2 ] join ' [ 3 ] join ' [ 4 ] join
+    1 2 + 3 + 4 + 5 +
 
-  and returns [ 1 2 3 4 ]
-
-  IMPORTANT: Note that in the example above does
-             NOT state that it is equivalent to:
-
-    ' [ ] ' [ 1 ] ' join [ 2 ] join ' [ 3 ] join ' [ 4 ] join
-
-  where the initial ' [ ] is the Identity Element for the binary
-  operator "join". This means that fold has a potential trip 
-  hazard. For example,
-
-    ' [ [ 1 2 ] [ 3  4 ] ]
-    ' [ reverse join ] fold
-
-  will return "[ 1 2 4 3 ]" and not "[ 2 1 4 3 ]" as you might
-  anticipate. This can be fixed by either prepending an
-  appropriate Identity Element, or by refactoring to avoid the
-  problem. So instead of
-
-    ' [ reverse join ] fold
-
-    use either
-
-    [] nested swap join ' [ reverse join ] fold
-
-  or
-
-    ' reverse map ' join fold
+  and returns 15
 
   If the nest is empty fold returns an empty nest.
 
@@ -147,13 +115,6 @@ fold ( [ x --> x ):
 
   Ancillary stack used by fold. It is protected so that fold can
   be used by builders.
-
-  TIP: with map, filter, and fold, when x is performed the stack
-  has the partial result and the next item in the nest on it.
-  Also, i^ will return the iteration count. Try the following...
-
-    ' [ 111 222 333 ] ' [ join i^ ] map echo cr
-    ' [ 111 222 333 ] ' [ i^ join ] map echo cr
 
 
   range ( m n --> [ ):
@@ -203,26 +164,6 @@ fold ( [ x --> x ):
 
 # ----- combinators -----
 
-  [ stack ]                       is map.act    (       --> s   )
-  protect map.act
-
-  [ map.act put
-    [] swap witheach
-      [ map.act share do
-        nested join ]
-     map.act release ]            is map        (   [ x --> [   )
-
-  [ stack ]                       is filter.act (       --> s   )
-  protect filter.act
-
-  [ filter.act put
-    [] swap witheach
-      [ dup
-        filter.act share do
-        iff [ nested join ]
-        else drop ]
-    filter.act release ]          is filter     (   [ x --> [   )
-
   [ stack ]                       is fold.act   (       --> s   )
   protect fold.act
 
@@ -232,6 +173,17 @@ fold ( [ x --> x ):
       witheach
         [ fold.act share do ] ]
     fold.act release ]            is fold       (   [ x --> x   )
+
+  [ ' [ [ ] ] rot join swap
+    nested
+    ' [ nested join ] join
+    fold ]                        is map        (   [ x --> x   )
+
+  [ ' [ [ ] ] rot join swap
+    nested ' dup swap join
+    ' [ iff [ nested join ]
+        else drop ] join
+    fold ]                        is filter     (   [ x --> x   )
 
 
 # ----- range -----

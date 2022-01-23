@@ -47,6 +47,12 @@ Some extensions may require `file.path` support which, if not provided by the sy
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
 
+* `higher-order.qky`
+
+  Higher order functions. `fold`, `foldr`, `map`, `filter`
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
 * `lookup-table.qky`
 
   Lookup table/association table/dictionary implementation.
@@ -61,12 +67,11 @@ Some extensions may require `file.path` support which, if not provided by the sy
   
 * `sundry.qky`
 
-   Some words that were considered for Quackery core words but omitted for the sake of brevity.
+   Some words that were considered for Quackery core words.
 
    * `#` `footnotes` – more ways of making comments.
    * `[peek]` `[poke]` – like `peek` and `poke` but can dive into nested nests.
    * `switch` `case` `otherwise` – a switch statement.
-   * `map` `filter` `fold` – combinators.
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
 

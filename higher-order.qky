@@ -26,11 +26,6 @@
 
   x must consume two items and return one item.
 
-  fold.arg ( --> s ):
-
-  Ancillary stack used by fold. It is protected so that fold can
-  be used by builders.
-
 
   foldr ( [ x --> x ):
 
@@ -41,9 +36,9 @@
   of fold, trivially as [ reverse fold ], but for the benefit of
   completists, reverse can be defined with fold as:
 
-   [ ' [ [ ] ] swap join
-     ' [ nested swap join ]
-     fold ]                 is reverse ( [ --> [ ):
+    [ ' [ [ ] ] swap join
+      ' [ nested swap join ]
+      fold ]                 is reverse ( [ --> [ ):
 
 
   map ( [ x --> [ ):
@@ -70,26 +65,21 @@
 
 )
 
+  [ over [] = iff drop done
+     dip 
+       [ behead swap
+        ' [ witheach ] ]
+     nested join do ]       is fold   ( [ x --> x )
 
-  [ stack ]                     is fold.act (     --> s )
-  protect fold.act
-
-  [ fold.act put
-    [ dup [] = if done
-      behead swap
-      witheach
-        [ fold.act share do ] ]
-    fold.act release ]          is fold     ( [ x --> x )
-
-  [ dip reverse fold ]          is foldr    ( [ x --> x )
+  [ dip reverse fold ]      is foldr  ( [ x --> x )
 
   [ ' [ [ ] ] rot join swap
     nested
     ' [ nested join ] join
-    fold ]                      is map      ( [ x --> [ )
+    fold ]                  is map    ( [ x --> [ )
 
   [ ' [ [ ] ] rot join swap
     nested ' dup swap join
     ' [ iff [ nested join ]
         else drop ] join
-    fold ]                      is filter   ( [ x --> [ )
+    fold ]                  is filter ( [ x --> [ )

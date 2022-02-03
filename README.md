@@ -64,7 +64,13 @@ Some extensions may require `file.path` support which, if not provided by the sy
   Replaces the default sorting words with a more efficient algorithm.
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
-  
+
+* `priority-queue.qky`
+
+  Priority queue implementation.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
 * `sundry.qky`
 
    Some words that were considered for Quackery core words.

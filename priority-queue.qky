@@ -1,0 +1,218 @@
+[ this ] is priority-queue.qky
+
+( ------ priority queues ------
+  Copyright (C) 2022 Gordon Charlton
+  https://github.com/GordonCharlton )
+
+( A priority queue is a nest of two items.
+
+  The zeroth item is a binary heap; a balanced tree with
+  implicit edges. The nodes are stored in a nest as items. The
+  edges are construed from the positions of the nodes within
+  the nest. In this diagram the numbers indicate the positions
+  of the nodes for a tree with twelve nodes.
+
+                        0
+                    ___/ \___
+                   /         \
+                  1           2
+                 / \         / \
+                /   \       /   \
+               3     4     5     6
+              / \   / \   /
+             7   8 9  10 11
+
+  Words are defined that express the arithmetic relationships
+  between the relative positions of the nodes. The usual
+  nomenclature is "parent", "left child", and "right child".
+  Here, "child" means the left child, and the right child is
+  referred to by it's relationship to the left child,
+  "sibling".
+
+  The first item in a priority queue is Quackery code which
+  prioritises items in the heap.
+
+  The highest priority item in the queue is always the item at
+  the front of the queue. If two or more items have the same
+  priority it is indeterminate which or them will arrive at
+  the front of the queue first, as this is dependant on the
+  state of the heap prior to the items joining the queue.
+  (This is the reason that heapsorts are unstable.)
+
+  For a demonstration of generating Huffman codes using this
+  extension, see rosettacode.org/wiki/Huffman_coding#Quackery
+
+  Glossary:
+
+  pqwith ( [ --> p ):
+
+  pqwith reates a priority queue "p" from an unordered nest of
+  items. The prioritising code follows the word pqwith, as is
+  the convention for words ending with "with".
+
+  So for example,
+
+                  ' [ 1 5 3 2 4 ] pqwith <
+
+  will create a priority queue of five numbers that gives
+  priority to smaller numbers. The priority queue will look
+  like this:
+
+                  [ [ 1 2 3 5 4 ] < ]
+
+  The prioritising code should take two items from the stack
+  and return true (1) if the 2nd on stack has higher priority
+  than the top of stack, and false if the ToS has higher
+  priority. If both items have the same priority it can return
+  true or false.
+
+  Note that this is an O(n) operation, while adding and
+  removing individual items from the priority queue are
+  O(log n) operations.
+
+  topq ( p x --> p ):
+
+  x is added to the priority queue p.
+
+  frompq ( p --> p x ):
+
+  The highest priority item, x, is removed from the priority
+  queue p.
+
+  pqsize ( p --> n ):
+
+  Returns the number of items in the priority queue.
+
+  *** The rest of the words are not part of the interface. ***
+
+  heap.pq ( --> s ):
+  comp.pq ( --> s ):
+  pq->stacks ( p --> ):
+  stacks->pq ( --> p ):
+
+  To reduce stack management, the heap and the prioritising
+  code reside on ancillary stacks while the priority queue
+  words are performed.
+
+  heapeek ( n --> x ):
+  heapoke ( n x --> ):
+
+  Like peek and poke, but specific to the priority queue heap.
+
+  parent ( n --> n ):
+
+  Given the position of a node, returns the position of its
+  parent. Assumes that the node has a parent.
+
+  has-parent ( n --> b ):
+
+  Given the position of a node, returns true if it has a
+  parent, and false otherwise.
+
+  child ( n --> n ):
+
+  Given the position of a node, returns the position of its
+  left child. Assumes that the node has a left child.
+
+  has-child ( n --> b ):
+
+  Given the position of a node, returns true if it has a left
+  child, and false otherwise.
+
+  sibling ( n --> n ):
+
+  Given the position of a left child node, returns the
+  position of its associated right child. Assumes that the
+  node has an associated right child.
+
+  has-sibling ( n --> b ):
+
+  Given the position of a left child node, returns true if it
+  has an associated right child node, and false otherwise.
+
+  compare ( x x --> b ):
+
+  Performs the prioritising code.
+
+  heapify.pq  ( n --> ):
+
+  Heapifies the heap, from item n downwards.
+
+)
+
+  [ stack ]                      is heap.pq     (     --> s   )
+
+  [ stack ]                      is comp.pq     (     --> s   )
+
+  [ unpack
+    comp.pq put heap.pq put ]    is pq->stacks  (   p -->     )
+
+  [ heap.pq take comp.pq take
+    2 pack ]                     is stacks->pq  (     --> p   )
+
+  [ heap.pq share swap peek ]    is heapeek     (   n --> x   )
+
+  [ heap.pq take
+    swap poke heap.pq put ]      is heapoke     ( n x -->     )
+
+  [ 1 - 1 >> ]                   is parent      (   n --> n   )
+
+  [ 0 > ]                        is has-parent  (   n --> b   )
+
+  [ 1 << 1+ ]                    is child       (   n --> n   )
+
+  [ child heap.pq share size < ] is has-child   (   n --> b   )
+
+  [ 1+ ]                         is sibling     (   n --> n   )
+
+  [ sibling
+    heap.pq share size < ]       is has-sibling (   n --> b   )
+
+  [ comp.pq share do ]           is compare     ( x x --> b   )
+
+  [ 0 peek size ]                is pqsize      (   p --> n   )
+
+  [ swap pq->stacks
+    heap.pq take tuck size
+    rot 0 join heap.pq put
+    [ dup has-parent while
+      dup parent
+      rot over heapeek
+      2dup compare iff
+        [ 2swap unrot heapoke ]
+        again
+      rot 2drop swap ]
+    heapoke
+    stacks->pq ]                 is topq        ( p x --> p   )
+
+  [ dup heapeek swap
+    [ dup has-child while
+      dup child
+      dup has-sibling if
+        [ dup sibling heapeek
+          over heapeek
+          compare if sibling ]
+      dip over dup heapeek
+      rot dip dup compare iff
+        [ rot heapoke ] again
+      2drop ]
+    heapoke ]                    is heapify.pq  (   n -->     )
+
+  [ dup pqsize 0 = if
+      [ $ "Unexpectedly empty priority queue."
+        fail ]
+    pq->stacks heap.pq share
+    behead
+    over [] = iff
+      [ swap heap.pq replace ]
+    else
+      [ swap -1 split
+        swap join heap.pq put
+        0 heapify.pq ]
+    stacks->pq swap ]            is frompq      (   p --> p x )
+
+  [ ]'[ 2 pack pq->stacks
+    heap.pq share
+    size 1 >> times
+      [ i heapify.pq ]
+    stacks->pq ]                 is pqwith      (   [ --> p   )

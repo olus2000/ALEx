@@ -136,7 +136,8 @@
 
   heapify.pq  ( n --> ):
 
-  Heapifies the heap, from item n downwards.
+  Heapifies the heap from item n downwards, provided that 
+  the descendents of n are already heapified.
 
 )
 

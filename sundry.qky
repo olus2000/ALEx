@@ -13,7 +13,7 @@
 
   footnotes ( [ $ --> [ $ ):
 
-  Builder .Causes the compiler to disregard everything that
+  Builder. Causes the compiler to disregard everything that
   comes after it down to the end of the string or file.
 
 

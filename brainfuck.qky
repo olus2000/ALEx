@@ -8,8 +8,8 @@
 
   brainfuck ( $ $ --> ):
 
-  Perform a brainfuck program (2nd on stack) using a data
-  string (top of stack) as input.
+  Perform a brainfuck program (top of stack) using a data
+  string (second on stack) as input.
 
   The word operates by translating the brainfuck program to an
   equivalent Quackery script and then performing it.
@@ -103,7 +103,8 @@
 
   [ 2dup peek 0 = ]            is zero      (   [ n --> [ n b )
 
-  [ temp put $ "" swap witheach
+  [ dip [ temp put $ "" ]
+    witheach
       [ $ "><+-.,[]" find
         [ table
           $ "right " $ "left "
@@ -115,4 +116,4 @@
     0 nested 0 rot quackery
     temp release 2drop ]       is brainfuck (   $ $ -->       )
 
-  $ "[-]>,[>,]<[.<]" $ "!skrow tI" brainfuck
+  $ "!skrow tI" $ "[-]>,[>,]<[.<]" brainfuck

@@ -1,4 +1,4 @@
-( [ this ] is literal.qky )
+[ this ] is literal.qky
 
 ( ------ Literal ------
   Copyright (C) 2021 Aleksander "olus2000" Sabak
@@ -17,7 +17,6 @@
     a stack effect of ( --> x ).
                                                                            )
 
-[ swap dup dup
-  share do
-  swap put
-  swap ]                             builds literal  (     a b --> c d     )
+[ over dup
+  take do
+  swap put ]                         builds literal  (     a b --> c d     )

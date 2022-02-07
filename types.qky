@@ -1,0 +1,51 @@
+[ lookup-table.qky drop ] now!
+
+[ this ] is type.qky
+
+( ------ Object Oriented Programming ------
+  Copyright (C) 2021 Aleksander "olus2000" Sabak
+  https://github.com/olus2000                                         )
+
+( Extension description                                               )
+
+
+[ stack 0 ]                                   is type.id ( -- [ )
+
+
+[ over
+  type.id share
+  swap put
+  1 type.id tally ]                       builds type ( [ $ -- [ $ )
+
+
+[ dup [] = if
+  [ $ '"generic" needs a name after it.'
+    message put bail ]
+  nextword nested
+  namenest take
+  join
+  namenest put
+  ' [ dup nest? not if
+      [ $ 'Non-nest passed to a generic word.'
+        message put bail ]
+      dup 0 peek ]
+  ' [ lut [ ] [ ] ]
+  copy nested join
+  ' [ not if
+      [ $ 'Generic word undefined for this type.'
+        message put bail ]
+      do ] join
+  actiontable take
+  1 stuff
+  actiontable put ]                       builds generic ( [ $ -- [ $ )
+
+
+[ over size 3 < if
+  [ $ '"behavior" needs a behavior, a type and a generic word.'
+    message put
+    bail ]
+  over dup take
+  over take
+  rot take
+  swap rot 8 peek
+  set-at ]                                builds behavior ( [ $ -- [ $ )

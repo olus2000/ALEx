@@ -35,6 +35,12 @@ Some extensions may require `file.path` support which, if not provided by the sy
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
 
+* `binary-search.qky`
+
+  Rightmost binary search.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
 * `brainfuck.qky`
 
   brainfuck interpreter.

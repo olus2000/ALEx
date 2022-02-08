@@ -116,4 +116,4 @@
     0 nested 0 rot quackery
     temp release 2drop ]       is brainfuck (   $ $ -->       )
 
-  $ "!skrow tI" $ "[-]>,[>,]<[.<]" brainfuck
+  $ "!skrow tI" $ "[-]>,[>,]<[.<]" brainfuck cr

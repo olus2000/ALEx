@@ -24,11 +24,16 @@ $ 'ALEx/' join filepath put
   
   Uncomment any extensions you want to use in your program. )
 
-' [ ( $ 'bigrat.qky' )
-    ( $ 'literal.qky' )
-    ( $ 'lookup-table.qky' )
-    ( $ 'merge-sort.qky' )
-    ( $ 'types.qky' )        ]
+' [ ( $ 'bigrat.qky'         )
+    ( $ 'binary-search.qky'  )
+    ( $ 'brainfuck.qky'      )
+    ( $ 'higher-order.qky'   )
+    ( $ 'literal.qky'        )
+    ( $ 'lookup-table.qky'   )
+    ( $ 'merge-sort.qky'     )
+    ( $ 'priority-queue.qky' )
+    ( $ 'sundry.qky'         )
+    ( $ 'types.qky'          ) ]
     
 witheach [ do loadfile ]
 

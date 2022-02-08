@@ -1,0 +1,119 @@
+[ this ] is brainfuck.qky
+
+( ------ brainfuck interpreter ------
+  Copyright (C) 2022 Gordon Charlton
+  https://github.com/GordonCharlton )
+
+( Glossary:
+
+  brainfuck ( $ $ --> ):
+
+  Perform a brainfuck program (top of stack) using a data
+  string (second on stack) as input.
+
+  The word operates by translating the brainfuck program to an
+  equivalent Quackery script and then performing it.
+
+  Any characters that are not brainfuck commands are ignored.
+
+  During execution, the brainfuck machine resides on the stack
+  as a nest of numbers (the memory) and a number (a pointer to
+  the current memory cell). Initially the nest is one cell long
+  (initialised to 0) but can grow at either end as required.
+  The cell at the leftmost end is always cell number 0.
+
+  The data string is stored on the ancillary stack "temp".
+
+  totape ( [ n n --> [ n ):
+
+  Stores the number on ToS in brainfuck memory at the current
+  cell.
+
+  right ( [ n --> [ n ):
+
+  Equivalent to the brainfuck command ">". Increments the
+  pointer, extending the memory to the right and initialising
+  the new cell to 0 if required.
+
+  left ( [ n --> [ n ):
+
+  Equivalent to the brainfuck command ">". Decrements the
+  pointer or extends the memory to the left and initialises a
+  new cell to 0 if required.
+
+  incr ( [ n --> [ n ):
+
+  Equivalent to the brainfuck command "+". Increments the 
+  number at the current memory cell.
+
+  decr ( [ n --> [ n ):
+
+  Equivalent to the brainfuck command "-". Decrements the
+  number at the current memory cell.
+
+  print ( [ n --> [ n ):
+
+  Equivalent to the brainfuck command ".". Prints the number
+  at the current memory cell as a character.
+
+  getch ( [ n --> [ n ):
+
+  Equivalent to the brainfuck command ",". Removes one
+  character from the start of the data string and stores it in
+  the current memory cell. If the data string is empty,
+  stores the number 0.
+
+  zero ( [ n --> [ n  b ):
+
+  Returns true if the current memory cell contains the number 0
+  and false otherwise.
+
+  The Quackery phrases "[ zero if done" and "zero until ]" are
+  equivalent to the brainfuck commands "[" and "]".
+
+  Fun fact:
+
+  The Quackery script below, from the definition of totape and
+  including the demonstration code (which prints "It works!")
+  is exactly 1024 characters long, i.e. the same size as the
+  executable code for the FALSE programming language compiler
+  which inspired brainfuck.
+
+  Source: https://en.wikipedia.org/wiki/Brainfuck#History
+)
+
+  [ dip tuck unrot poke swap ] is totape    ( [ n n --> [ n   )
+
+  [ 1+ over size over = if
+      [ dip [ 0 join ] ] ]     is right     (   [ n --> [ n   )
+
+  [ dup 0 = iff
+      [ 0 rot join swap ]
+    else [ 1 - ] ]             is left      (   [ n --> [ n   )
+
+  [ 2dup peek 1+ totape ]      is incr      (   [ n --> [ n   )
+
+  [ 2dup peek 1 - totape ]     is decr      (   [ n --> [ n   )
+
+  [ 2dup peek emit ]           is print     (   [ n --> [ n   )
+
+  [ temp take dup $ "" =
+    iff 0 else behead
+    swap temp put totape ]     is getch     (   [ n --> [ n   )
+
+  [ 2dup peek 0 = ]            is zero      (   [ n --> [ n b )
+
+  [ dip [ temp put $ "" ]
+    witheach
+      [ $ "><+-.,[]" find
+        [ table
+          $ "right " $ "left "
+          $ "incr "  $ "decr "
+          $ "print " $ "getch "
+          $ "[ zero if done "
+          $ "zero until ] " $ "" ]
+        do join ]
+    0 nested 0 rot quackery
+    temp release 2drop ]       is brainfuck (   $ $ -->       )
+
+  $ "!skrow tI" $ "[-]>,[>,]<[.<]" brainfuck

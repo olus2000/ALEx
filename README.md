@@ -12,15 +12,13 @@ If you are going to be using almost every extension provided in the repository y
 The added convenience is that any updates can be performed by pulling the repository and copying the `ALEx-loader.qky`.
 
 ### Download extensions and use ALEx-loader
-If you wish to use a substantial amount of extensions provided here but don't want to clone the whole repo you can make the 'ALEx' folder yourself and download any extensions you need by hand. You then can download `ALEx-loader.qky`, uncomment relevant lines and add it to your `extensions.qky`. It will handle loading extensions from the 'ALEx' folder. Be careful to make sure that either your system supports `file.path` or you downloaded the `filepath.qky` extension.
+If you wish to use a substantial amount of extensions provided here but don't want to clone the whole repo you can make the 'ALEx' folder yourself and download any extensions you need by hand. You then can download `ALEx-loader.qky`, uncomment relevant lines and add it to your `extensions.qky`. It will handle loading extensions from the 'ALEx' folder. Be careful to make sure that either your system supports `filepath` or you downloaded the `filepath.qky` extension.
 
 ### Download only extensions
 If you only wish to use a couple of extensions you can just download them and add to your `extensions.qky`. They are just Quackery files after all, you don't need any fancy loaders to use them.
 
 ## Assumptions about the system
-Some extensions may require the system with the [protect breaks bailed](https://github.com/GordonCharlton/Quackery/issues/3) issue resolved.
-
-Some extensions may require `file.path` support which, if not provided by the system, can be loaded from `filepath.qky`. `ALEx-loader.qky` requires either `file.path` system support or `filepath.qky` among the extensions in the 'ALEx' folder.
+Some extensions may require `filepath` support which, if not provided by the system, can be loaded from `filepath.qky`. `ALEx-loader.qky` requires either `filepath` system support or `filepath.qky` among the extensions in the 'ALEx' folder.
 
 ## Contents
 * `ALEx-loader.qky`
@@ -41,11 +39,29 @@ Some extensions may require `file.path` support which, if not provided by the sy
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
 
+* `binary-search.qky`
+
+  Rightmost binary search.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
+* `brainfuck.qky`
+
+  brainfuck interpreter.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
 * `filepath.qky`
 
   Support for relative and scoped paths.
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
+
+* `higher-order.qky`
+
+  Higher order functions. `fold`, `foldr`, `map`, `filter`
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
 
 * `literal.qky`
 
@@ -65,10 +81,24 @@ Some extensions may require `file.path` support which, if not provided by the sy
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
 
+* `priority-queue.qky`
+
+  Priority queue implementation.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
+* `sundry.qky`
+
+   Some words that were considered for Quackery core words.
+
+   * `#` `footnotes` – more ways of making comments.
+   * `[peek]` `[poke]` – like `peek` and `poke` but can dive into nested nests.
+   * `switch` `case` `otherwise` – a switch statement.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
 * `types.qky`
 
   A simple object system for easy polimorphism.
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
-
-

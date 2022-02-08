@@ -35,11 +35,29 @@ Some extensions may require `file.path` support which, if not provided by the sy
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
 
+* `binary-search.qky`
+
+  Rightmost binary search.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
+* `brainfuck.qky`
+
+  brainfuck interpreter.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
 * `filepath.qky`
 
   Support for relative and scoped paths.
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
+
+* `higher-order.qky`
+
+  Higher order functions. `fold`, `foldr`, `map`, `filter`
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
 
 * `lookup-table.qky`
 
@@ -52,6 +70,23 @@ Some extensions may require `file.path` support which, if not provided by the sy
   Replaces the default sorting words with a more efficient algorithm.
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
+* `priority-queue.qky`
+
+  Priority queue implementation.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
+* `sundry.qky`
+
+   Some words that were considered for Quackery core words.
+
+   * `#` `footnotes` – more ways of making comments.
+   * `[peek]` `[poke]` – like `peek` and `poke` but can dive into nested nests.
+   * `switch` `case` `otherwise` – a switch statement.
+
+  Author: [Gordon Charlton](https://github.com/GordonCharlton)
+
 
 * `template.qky`
 

@@ -1,0 +1,156 @@
+[ this ] is sundry.qky
+
+( ------ various useful words ------
+  Copyright (C) 2022 Gordon Charlton
+   https://github.com/GordonCharlton )
+
+( Glossary:
+
+  # ( [ $ --> [ $ ):
+
+  Builder.  "#" means "comment to end of line"
+  
+
+  footnotes ( [ $ --> [ $ ):
+
+  Builder. Causes the compiler to disregard everything that
+  comes after it down to the end of the string or file.
+
+
+  [peek] ( [ p --> x ):
+
+  Returns the item at the specified place p in a nest.
+
+  "p" is a "path", a nest of item numbers leading to a specific
+  item in an (optionally multiply nested) nest.
+
+  Given the nest [ 0 1 [ 20 21 22 ] 3 ]
+
+  the path [ 1 ] leads to the number 1
+  the path [ 2 ] leads to the nest [ 20 21 22 ] and
+  the path [ 2 1 ] leads to the number 21
+
+
+  [poke] ( x [ p --> [ ):
+
+  Replaces the item at the specified place p in a nest with x.
+
+  999 ' [ 0 1 [ 20 21 22 ] 3 ] ' [ 2 1 ] [poke]
+
+  will return [ 0 1 [ 20 999 22 ] 3 ]
+
+
+  switch ( x --> ):
+
+  x will be compared to various cases within a switch statement.
+
+  See the demo code in the footnotes for the structure of a
+  switch statement.
+
+
+  case ( x --> ):
+
+  x is compared to the item consumed by switch. If they are equal
+  the item following case is done and the case statement exited.
+
+
+  otherwise ( --> ):
+
+  Words following otherwise are the "default" action i.e. will be
+  executed if none of the cases are satisfied.
+
+  "otherwise ( do nothing )" is the suggested way of indicating
+  there is no default action.
+
+  "otherwise $ 'Unexpected otherwise.' fail" is the suggested way
+  of indicating that none of the cases were satisfied when one of
+  them should have been.
+
+
+  switch.arg ( --> s ):
+
+  Ancillary stack used within a switch statement. It is protected
+  so that switch statements can be used by builders.
+
+
+  range ( m n --> [ ):
+
+  range returns a nest of numbers from m to n-1.
+
+  If m is not less than n it returns an empty nest.
+
+)
+
+
+  [ dup $ "" = not while
+    behead carriage = until ] builds #          (   [ $ --> [ $ )
+
+  [ drop $ "" ]               builds footnotes  (   [ $ --> [ $ )
+
+
+# ----- deep peek and poke -----
+
+  [ witheach peek ]               is [peek]     (   [ p --> x   )
+
+  [ dup dip
+      [ rot dip
+        [ dip dup
+          witheach
+            [ peek dup ]
+    2drop ] ]
+    reverse
+    witheach
+      [ dip swap poke ] ]         is [poke]     ( x [ p --> [   )
+
+
+# ----- switch statement -----
+
+  [ stack ]                       is switch.arg (       --> s   )
+  protect switch.arg
+
+  [ switch.arg put ]              is switch     (     x -->     )
+
+  [ switch.arg release ]          is otherwise  (       -->     )
+
+  [ switch.arg share
+    != iff ]else[ done
+    otherwise
+    ]'[ do ]done[ ]               is case       (     x -->     )
+
+
+# ----- range -----
+
+  [ over - swap temp put
+    [] swap times
+      [ i^ temp share + join ]
+    temp release ]                is range      (   n n --> [   )
+
+
+footnotes  ( ** make this line a comment to run demo code ** )
+
+
+#  demo code for deep peek and poke...
+
+     ' [ 10 [ 20 30 40 ] 50 ]
+    dup     ' [ 1 2 ] [peek] echo cr     # prints 40
+    99 swap ' [ 1 2 ] [poke]
+            ' [ 1 2 ] [peek] echo cr     # prints 99
+  cr
+
+
+#  demo code for switch statement...
+
+  [ switch
+    1       case [ say "The number 1."     cr ]
+    $ "two" case [ say 'The string "two".' cr ]
+       otherwise say "Something else." cr ]     is demo
+                                                (     x -->      )
+  ' tally demo     # prints: Something else.
+  $ "two" demo     # prints: The string "two".
+        1 demo     # prints: The number 1.
+  cr
+
+
+# demo code for range...
+
+  3 8 range echo cr                      # prints: [ 3 4 5 6 7 ]

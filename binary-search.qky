@@ -1,0 +1,80 @@
+[ this ] is binary-search.qky
+
+( ------ Binary Search ------
+  Copyright (C) 2022 Gordon Charlton
+   https://github.com/GordonCharlton )
+
+( This is a rightmost binary search. It locates the final
+  occurence of an item within an ordered nest.
+
+  Glossary:
+
+  searchwith ( n n [ x --> n b ):
+
+  The first two items on the stack are the lower and upper 
+  bounds; the range of items within the nest within which to 
+  search. The range is upper bound exclusive, i.e. to search 
+  the entire nest the lower bound should be 0 and the upper
+  bound should be the size of the nest.
+
+  The nest item on the stack is the nest of ordered items 
+  within which to search.
+
+  The ToS is the item to search for within the nest.
+
+  The word or nest following searchwith should describe how 
+  the nest is ordered. For example, if the items in the nest 
+  are numbers in ascending numerical order e.g. [ 2 3 5 7 9 ]
+  then < ("less than") describes the ordering, as 2 < 3 < 5 
+  and so on.
+
+  As with <, it should consume two items from the stack and 
+  return a boolean.
+
+  searchwith returns two items. The ToS is a boolean. 
+
+  If the boolean is true (i.e. 1) then the item searched for 
+  exists within the nest, and the second on stack is the item 
+  number of the rightmost instance of the item within the 
+  nest.
+
+      item number:    0   1   2   3   4
+             nest: [ 101 107 127 149 151 ] 
+
+  If the boolean is false (i.e. 0) then the item searched for 
+  does not exists within the nest, and the second on stack is 
+  the position in the nest where the item should be inserted 
+  (i.e with "stuff") to maintain the ordering of the nest.
+
+         position:  0   1   2   3   4   5
+             nest: [ 101 107 127 149 151 ] 
+
+
+  value.bs, nest.bs, and test.bs are ancillary stacks used by
+  searchwith.
+)
+
+  [ stack ]                   is value.bs   (         --> n   )
+  [ stack ]                   is nest.bs    (         --> n   )
+  [ stack ]                   is test.bs    (         --> n   )
+
+  [ ]'[ test.bs put
+    value.bs put
+    nest.bs put
+    1 - swap
+    [ 2dup < if done
+      2dup + 1 >>
+      nest.bs share over peek
+      value.bs share swap
+      test.bs share do iff
+        [ 1 - unrot nip ]
+        again
+      [ 1+ nip ] again ]  
+    drop
+    nest.bs take over peek
+    value.bs take 2dup swap
+    test.bs share do
+    dip [ test.bs take do ]
+    or not
+    dup dip [ not + ] ]       is searchwith ( n n [ x --> n b )
+

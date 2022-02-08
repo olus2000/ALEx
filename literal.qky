@@ -6,8 +6,8 @@
 
 ( This module adds a builder that serves a similar purpose as `constant`
   but instead of resulting in an object that will put the calculated value
-  on the stack it just results in the object, no matter if it's a stack,
-  an operator or a number, without any additions.
+  on the stack it just results in the calculated value, no matter if it's
+  a nest, an operator or a number, without any additions.
 
   # Glossary:
 

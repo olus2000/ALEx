@@ -29,6 +29,12 @@ Some extensions may require `file.path` support which, if not provided by the sy
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
 
+* `template.qky`
+
+  Template for your own extension. Feel free to submit pull requests with your work.
+
+  Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
+
 * `bigrat.qky`
 
   Big rational number operations.
@@ -38,6 +44,12 @@ Some extensions may require `file.path` support which, if not provided by the sy
 * `filepath.qky`
 
   Support for relative and scoped paths.
+
+  Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
+
+* `literal.qky`
+
+  A word for proceduraly generating values at compile-time.
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
 
@@ -53,8 +65,10 @@ Some extensions may require `file.path` support which, if not provided by the sy
 
   Author: [Gordon Charlton](https://github.com/GordonCharlton)
 
-* `template.qky`
+* `types.qky`
 
-  Template for your own extension. Feel free to submit pull requests with your work.
+  A simple object system for easy polimorphism.
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
+
+

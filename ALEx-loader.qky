@@ -1,40 +1,54 @@
+( `filepath` support is required for the ALEx loader. )
+
+[ 'filepath' name? not if
+  [ $ '`filepath` support required for ALEx-loader!'
+    message put bail ] ] now!
+
+
 [ this ] is ALEx-loader.qky
+
+
+( ALEx loader allows for easy loading extensions under
+  a single, fixed path. Contrary to file editing which
+  usually operates on files in the working directory,
+  loading extensions from a fixed point configured at
+  system start makes more sense.
   
-( `filepath` support is required for the ALEx loader.
-  This section is dedicated to loading a filepath extension
-  if `filepath` is not already present.                    )
-
-[ $ 'filepath' name? not if
-  [ $ 'ALEx/filepath.qky' sharefile nip iff
-    [ $ 'ALEx/filepath.qky' loadfile ]
-    else
-    [ $ "ALEx problem: Couldn't access 'ALEx/filepath.qky'"
-      message put bail ] ] ] now!
-
-( It is recommended to `put` a default path on `file-path`
-  in "extensions.qky", but ALEx loader checks it anyway.    )
-
-filepath size 1 > iff
-  [ filepath share ]
-  else [ $ '' ]
-$ 'ALEx/' join filepath put
-
-( Put any extensions you need in the 'ALEx/' folder
-  and add their file names to the loadfile nest.
+  # Config guide:
   
-  Uncomment any extensions you want to use in your program. )
-
-' [ ( $ 'bigrat.qky'         )
-    ( $ 'binary-search.qky'  )
-    ( $ 'brainfuck.qky'      )
-    ( $ 'higher-order.qky'   )
-    ( $ 'literal.qky'        )
-    ( $ 'lookup-table.qky'   )
-    ( $ 'merge-sort.qky'     )
-    ( $ 'priority-queue.qky' )
-    ( $ 'sundry.qky'         )
-    ( $ 'types.qky'          ) ]
+  filepath dependency:
     
-witheach [ do loadfile ]
+    ALEx-loader requires filepath support to work.
+    If your system doesn't support it download
+    "filepath.qky" or equivalent and load it in
+    "extensions.qky" before ALEx-loader.
+  
+  ALEx.path:
 
-filepath release
+    `put` the full path of your extensions folder here
+    after loading ALEx-loader in "extensions.qky".
+    Default: "./"
+  
+  # Glossary:
+  
+  ALEx-load ( $ -- ):
+  
+    Takes a name of the extension file as a string and
+    loads the file located under the path specified on
+    top of `ALEx.path`, regardless of the current work
+    path on `filepath`.
+  
+  ALEx.path ( -- [ ):
+  
+    Path to extensions that ALEx-load is supposed to be
+    loading. Should be configured in "extensions.qky"
+    and not changed by any programs.                   )
+
+
+[ stack [ 46 47 ] ]   is ALEx.path ( -- [ )
+
+
+[ ALEx.path share
+  filepath put
+  loadfile
+  filepath release ]  is ALEx-load ( $ -- )

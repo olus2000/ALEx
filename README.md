@@ -1,29 +1,56 @@
 # Awesome Library of Extensions
-ALEx is meant to be a publicly avaliable repository of extensions for the [Quackery](https://github.com/GordonCharlton/Quackery) programming language created by [Gordon Charlton](https://github.com/GordonCharlton). At the time of its creation the language doesn't have a significant community that I know of, but I hope someone interested in Quackery finds this repo useful.
+ALEx is meant to be a publicly avaliable repository of extensions for the
+[Quackery](https://github.com/GordonCharlton/Quackery) programming language
+created by [Gordon Charlton](https://github.com/GordonCharlton).
+At the time of its creation the language doesn't have a significant community
+that I know of, but I hope someone interested in Quackery finds this repo useful.
 
-All extensions are described inside their files.
+All extensions are described in detail inside their files.
 
 ## Usage guide
-There are a couple of ways to use ALEx depending on how much you are comfortable with downloading and how many extensions you need.
+There are a couple of ways to use ALEx depending on how much you are comfortable
+with downloading and how many extensions you need. For **ALEx-loader config guide**
+check `ALEx-loader.qky`.
 
 ### Clone the repository
-If you are going to be using almost every extension provided in the repository you can just clone it with git. They should be cloned into a folder 'ALEx' in the directory you are running Quackery from. Then you can copy the `ALEx-loader.qky` into the Quackery directory and add it to your `extensions.qky`. It will handle loading extensions from the 'ALEx' folder, just uncomment relevant lines in yout `ALEx-loader.qky`.
+If you are going to be using almost every extension provided in the repository
+you can just clone it with git. Then you can copy the `ALEx-loader.qky`
+into the Quackery directory and configure it properly.
+You will then be able to load any extension in the folder.
 
-The added convenience is that any updates can be performed by pulling the repository and copying the `ALEx-loader.qky`.
+The added convenience is that any updates can be performed by pulling
+the repository and copying the `ALEx-loader.qky` if it was updated.
 
 ### Download extensions and use ALEx-loader
-If you wish to use a substantial amount of extensions provided here but don't want to clone the whole repo you can make the 'ALEx' folder yourself and download any extensions you need by hand. You then can download `ALEx-loader.qky`, uncomment relevant lines and add it to your `extensions.qky`. It will handle loading extensions from the 'ALEx' folder. Be careful to make sure that either your system supports `filepath` or you downloaded the `filepath.qky` extension.
+If you wish to use a substantial amount of extensions provided here
+but don't want to clone the whole repo you can download any extensions you need
+by hand into a dedicated folder. You then can download `ALEx-loader.qky`
+and configure it properly.
+
+Be careful to make sure that you have met all
+dependencies, including `filepath` for `ALEx-loader.qky`.
 
 ### Download only extensions
-If you only wish to use a couple of extensions you can just download them and add to your `extensions.qky`. They are just Quackery files after all, you don't need any fancy loaders to use them.
+If you only wish to use a couple of extensions you can just download them
+and add to your `extensions.qky`. They are just Quackery files after all,
+you don't need any fancy loaders to use them.
+
+You may need to comment out lines at the start of extensions that depend on
+other extensions. Make sure to load them in the correct order so all dependencies
+are met.
 
 ## Assumptions about the system
-Some extensions may require `filepath` support which, if not provided by the system, can be loaded from `filepath.qky`. `ALEx-loader.qky` requires either `filepath` system support or `filepath.qky` among the extensions in the 'ALEx' folder.
+Some extensions may require `filepath` support which, if not provided by the system,
+can be loaded from `filepath.qky`. `ALEx-loader.qky` requires either `filepath`
+system support or `filepath.qky` to be loaded beforehand.
+
+Some extensions may depend on other extensions.
 
 ## Contents
 * `ALEx-loader.qky`
 
-  Used to load extensions. Should be copied up a directory. Assumes the folder with ALEx extensions is called 'ALEx'.
+  Includes a word for loading the extension and a configurable path for the
+  extension folder.
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
 
@@ -53,7 +80,7 @@ Some extensions may require `filepath` support which, if not provided by the sys
 
 * `filepath.qky`
 
-  Support for relative and scoped paths.
+  Support for relative and scoped paths. Obsolete with current versions of Quackery.
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
 
@@ -65,7 +92,7 @@ Some extensions may require `filepath` support which, if not provided by the sys
 
 * `literal.qky`
 
-  A word for proceduraly generating values at compile-time.
+  A word for proceduraly generating values at build-time.
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)
 
@@ -100,5 +127,7 @@ Some extensions may require `filepath` support which, if not provided by the sys
 * `types.qky`
 
   A simple object system for easy polimorphism.
+  
+  Depends on: `lookup-table.qky`
 
   Author: [Aleksander "olus2000" Sabak](https://github.com/olus2000)

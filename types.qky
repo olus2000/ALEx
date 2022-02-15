@@ -1,4 +1,4 @@
-[ lookup-table.qky drop ] now!
+[ $ 'lookup-table.qky' ALEx-load ] now!
 
 [ this ] is types.qky
 

@@ -5,20 +5,20 @@
   https://github.com/olus2000                        )
 
 ( This extension allows for better handling of files
-  and directories. Adding the `file.path` ancillary
+  and directories. Adding the `filepath` ancillary
   stack allows words to set a relative path for other
   words to work from.
 
   # Glossary:
 
-  file.path ( --> s ):
+  filepath ( --> s ):
     An ancillary stack holding the relative path to
     be used by file handling words.
     
     This stack is protected.
 
   with-path ( $ --> $ ):
-    Prepends the top value from the `file.path` stack
+    Prepends the top value from the `filepath` stack
     to the string on top of the Quackery stack.
 
   sharefile, takefile, releasefile, replacefile,
@@ -29,17 +29,17 @@
   
   loadfile:
     Changed the default behavior to prepend the given
-    file name with the top value from the `file.path`
+    file name with the top value from the `filepath`
     stack. This word now only checks for duplicate
     loads using the given file name. If you wish to
     load a file from another directory then put this
-    directory on `file.path` first and only pass the
+    directory on `filepath` first and only pass the
     file name to `loadfile`.                         )
 
-[ stack [ ] ]           is file.path ( --> s )
-                   protect file.path
+[ stack [ ] ]                 is filepath ( --> s )
+                         protect filepath
 
-[ file.path share swap join ] is with-path ( $ --> $ )
+[ filepath share swap join ]  is with-path ( $ --> $ )
 
 [ with-path sharefile ]       is sharefile
 [ with-path putfile ]         is putfile

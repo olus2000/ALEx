@@ -17,7 +17,7 @@
   the entire nest the lower bound should be 0 and the upper
   bound should be the size of the nest.
 
-  The nest item on the stack is the nest of ordered items 
+  The next item on the stack is the nest of ordered items 
   within which to search.
 
   The ToS is the item to search for within the nest.

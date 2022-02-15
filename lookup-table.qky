@@ -16,6 +16,7 @@
   # Glossary:
 
   lut ( key -- value true | key false ):
+
     Takes a Quackery object 'key' from the stack. If a value was
     associated with this key `lut` will leave it on the stack along
     with a `true` value. Otherwise it will leave the key and a `false`
@@ -32,12 +33,18 @@
     Used with conjunction with `do`, lookup tables provides multiway
     branching behavior similar to `case` in other languages.
 
+  <lut> ( -- new-lut ):
+
+    Creates a new, empty lookup table.
+
   set-at ( value key lut -- ):
+
     Modifies (mutates) the lookup table to add or update the `key` to
     point to the `value`.
 
   lut.update ( value key lut -- );
   lut.append ( value key lut -- ):
+
     Helper words for set-at. Used to change the value that `key`
     points at or to add a new key-value pair to the lut respectively.
     These words are not safe and may break luts or throw errors when
@@ -49,6 +56,10 @@
   [ 2drop false ] else
   [ peek nip true ]
   ]done[ ]                    is lut ( key -- value true | key false )
+
+[ ' lut nested
+  [] nested join
+  [] nested join ]            is <lut> ( -- new-lut )
 
 [ dup temp put
   1 peek find

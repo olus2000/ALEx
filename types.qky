@@ -51,6 +51,11 @@
     type is 2D-vector
     
     [ 2D-vector 4 5 ] is vec1
+
+  type.id ( -- [ ):
+
+    A stack holding a number not yet used as a simple type identifier
+    when generating types with `type`. 
   
   generic ( [ $ -- [ $ ):
   
@@ -62,6 +67,23 @@
     Example usage:
     
     generic magnitude-square
+
+  generic.action ( ..a obj [ generic.action actions-lut ] -- ..b ):
+
+    An action type identifier of generic words. It's action is to
+    dispatch the actions-lut on the object passed as the argument
+    and `do` the corresponding action or `bail` if no action is
+    associated with the object's type.
+
+  <generic> ( -- new-generic ):
+  
+    A constructor for objects representing generic words.
+
+  generic? ( obj -- ? ):
+
+    A predicate for generic words. Returns `true` if the object's type
+    id is `generic.action` and `false` otherwise. Returns `false` if
+    not passed a nest.
   
   behavior ( [ $ -- [ $ ):
   
@@ -72,7 +94,13 @@
     Example usage:
     
     [ dup 1 peek 2 **
-      swap 2 peek 2 ** + ] 2D-vector magnitude-square behavior        )
+      swap 2 peek 2 ** + ] 2D-vector magnitude-square behavior
+
+  lut.set-at ( value key lut -- ):
+  set-at
+
+    `set-at` for lookup tables is redefined to be a generic word with
+    behavior defined for lookup tables.                               )
 
 
 [ stack 0 ]                                   is type.id ( -- [ )
@@ -84,39 +112,66 @@
   1 type.id tally ]                       builds type ( [ $ -- [ $ )
 
 
-[ dup [] = if
-  [ $ '"generic" needs a name after it.'
+[ dup nest? not if
+  [ $ 'Non-nest passed to a generic word.'
     message put bail ]
-  nextword nested
+  dup 0 peek
+  ]'[ do not if
+  [ $ 'Generic word undefined for this type.'
+    message put bail ]
+  do ]done[ ]                                 is generic.action 
+                            ( ..a obj [ generic.action actions-lut ] -- ..b )
+
+
+[ ' generic.action nested
+  <lut> nested join ]                         is <generic> ( -- new-generic )
+
+
+[ dup nest? not iff
+  [ drop false ] done
+  0 peek ' generic.action oats ]              is generic? ( obj -- ? )
+
+
+[ dup $ '' = if
+  [ $ '`generic` needs a name after it.'
+    message put bail ]
+  nextword dup
+  name? if
+  [ dup build share
+    generic? iff
+    drop ]done[ ]
+  ( the following is literally code copied from `is`
+    if tere only was a way of reusing builder functionality... )
+  nested
   namenest take
   join
   namenest put
-  ' [ dup nest? not if
-      [ $ 'Non-nest passed to a generic word.'
-        message put bail ]
-      dup 0 peek ]
-  ' [ lut [ ] [ ] ]
-  copy nested join
-  ' [ not if
-      [ $ 'Generic word undefined for this type.'
-        message put bail ]
-      do ] join
+  <generic>
   actiontable take
   1 stuff
   actiontable put ]                       builds generic ( [ $ -- [ $ )
 
 
 [ over size 3 < if
-  [ $ '"behavior" needs a behavior, a type and a generic word.'
+  [ $ '`behavior` needs a behavior, a type and a generic word.'
     message put
     bail ]
   over dup take
   over take
   rot take
-  swap rot 8 peek
+  swap rot 1 peek
   set-at ]                                builds behavior ( [ $ -- [ $ )
 
 
+( ----- set-at as a generic ----- )
+
+set-at is lut.set-at ( value key lut -- )
+generic set-at
+lut.set-at lut set-at behavior
+
+
+
+( ----- example ----- )
 [ drop $ '' ] now! ( comment this line to run the example code )
 
 
